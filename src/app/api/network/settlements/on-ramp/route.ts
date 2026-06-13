@@ -6,6 +6,7 @@ import {
   getOrganizationNamesByIds,
   getProfileTagsByIds,
 } from "@/lib/db/withdrawal-requests";
+import { resolveMerchantCheckoutProviderUrl } from "@/lib/settlements/checkout-url";
 
 /** GET /api/network/settlements/on-ramp — consumer deposits + merchant checkout sessions. */
 export async function GET() {
@@ -49,7 +50,7 @@ export async function GET() {
       reference: c.reference,
       status: c.status,
       paymentMethod: c.payment_method,
-      providerUrl: c.provider_url,
+      providerUrl: resolveMerchantCheckoutProviderUrl(c.provider_url),
       destinationAddress: c.destination_stellar_address,
       createdAt: c.created_at,
     })),
