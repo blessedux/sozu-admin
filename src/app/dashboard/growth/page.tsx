@@ -5,13 +5,11 @@ import {
   VelocityChart,
 } from "@/components/admin/ui";
 import { MetricCard } from "@/components/admin/metric-card";
-import {
-  mockAcquisition,
-  mockFunnel,
-  mockVelocity,
-} from "@/lib/network/mock-data";
+import { getGrowthData } from "@/lib/network/queries";
 
-export default function GrowthPage() {
+export default async function GrowthPage() {
+  const { funnel, acquisition, velocity } = await getGrowthData();
+
   return (
     <div className="space-y-8">
       <PageHeader
@@ -23,7 +21,7 @@ export default function GrowthPage() {
         <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sozu-cyan">
           Funnel
         </h2>
-        <FunnelChart steps={mockFunnel} />
+        <FunnelChart steps={funnel} />
       </Panel>
 
       <div className="grid gap-6 lg:grid-cols-2">
@@ -32,7 +30,7 @@ export default function GrowthPage() {
             Acquisition Sources
           </h2>
           <div className="grid gap-3 sm:grid-cols-2">
-            {mockAcquisition.map((s) => (
+            {acquisition.map((s) => (
               <MetricCard
                 key={s.source}
                 label={s.source}
@@ -46,7 +44,7 @@ export default function GrowthPage() {
           <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sozu-cyan">
             Wallet Creation Velocity (7d)
           </h2>
-          <VelocityChart points={mockVelocity} />
+          <VelocityChart points={velocity} />
         </Panel>
       </div>
     </div>

@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
-import { mockInvestorSnapshot } from "@/lib/network/mock-data";
+import { getInvestorSnapshot } from "@/lib/network/queries";
 
 /** Public read-only snapshot for investor mode — no PII. */
 export async function GET() {
-  const { liveTransactions, ...publicSnapshot } = mockInvestorSnapshot;
+  const snapshot = await getInvestorSnapshot();
+  const { liveTransactions, ...publicSnapshot } = snapshot;
+
   return NextResponse.json({
     ...publicSnapshot,
     liveTransactions: liveTransactions.map((tx) => ({

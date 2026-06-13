@@ -1,22 +1,24 @@
 import { MetricCard, MetricGroup } from "@/components/admin/metric-card";
 import { PageHeader, Panel } from "@/components/admin/ui";
 import { formatCompactUsd, formatPercent } from "@/lib/format";
-import { mockCredit } from "@/lib/network/mock-data";
+import { getCreditMetrics } from "@/lib/network/queries";
 
-export default function CreditPage() {
-  const data = mockCredit;
+export default async function CreditPage() {
+  const data = await getCreditMetrics();
 
   return (
     <div className="space-y-8">
       <PageHeader
         title="Credit Analytics"
-        description="Future-proof architecture for credit.sozu.capital — ready when lending goes live"
+        description="Live metrics from SozuCredit — loans, repayments, and yield"
       />
-      <Panel>
-        <p className="text-sm text-gray-400">
-          Lending product not live yet. Metrics will populate from SozuCredit when loans are issued.
-        </p>
-      </Panel>
+      {data.loansIssued === 0 ? (
+        <Panel>
+          <p className="text-sm text-gray-400">
+            No active loans yet. Metrics will populate automatically when credit agreements are issued.
+          </p>
+        </Panel>
+      ) : null}
       <MetricGroup title="Credit Network">
         <MetricCard label="Loans Issued" value={String(data.loansIssued)} />
         <MetricCard

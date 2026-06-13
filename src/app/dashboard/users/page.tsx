@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { DataTable, PageHeader } from "@/components/admin/ui";
 import { formatCompactUsd } from "@/lib/format";
-import { mockUsers } from "@/lib/network/mock-data";
+import { getUsers } from "@/lib/network/queries";
 
-export default function UsersPage() {
+export default async function UsersPage() {
+  const users = await getUsers();
+
   return (
     <div>
       <PageHeader
@@ -12,7 +14,7 @@ export default function UsersPage() {
       />
       <DataTable
         columns={["Sozu Tag", "Created", "Source", "Transactions", "Volume", ""]}
-        rows={mockUsers.map((u) => [
+        rows={users.map((u) => [
           u.sozuTag,
           u.createdAt,
           u.referralSource,

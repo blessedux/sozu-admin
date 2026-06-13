@@ -72,22 +72,29 @@ export function DataTable({
 }
 
 export function StatusBadge({ status }: { status: string }) {
+  const normalized = status.toLowerCase().replace(/\s+/g, "_");
   const colors: Record<string, string> = {
     active: "bg-emerald-500/10 text-emerald-400",
     deployed: "bg-amber-500/10 text-amber-400",
     inactive: "bg-gray-500/10 text-gray-400",
     success: "bg-emerald-500/10 text-emerald-400",
+    completed: "bg-emerald-500/10 text-emerald-400",
     pending: "bg-amber-500/10 text-amber-400",
+    awaiting_payment: "bg-amber-500/10 text-amber-400",
+    processing: "bg-blue-500/10 text-blue-400",
+    approved: "bg-blue-500/10 text-blue-400",
     failed: "bg-red-500/10 text-red-400",
+    cancelled: "bg-gray-500/10 text-gray-400",
+    expired: "bg-gray-500/10 text-gray-400",
   };
   return (
     <span
       className={cn(
         "inline-flex rounded-full px-2 py-0.5 text-xs font-medium capitalize",
-        colors[status] ?? "bg-gray-500/10 text-gray-400"
+        colors[normalized] ?? "bg-gray-500/10 text-gray-400"
       )}
     >
-      {status}
+      {status.replace(/_/g, " ")}
     </span>
   );
 }

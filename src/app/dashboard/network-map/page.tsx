@@ -1,17 +1,18 @@
 import { NetworkMapPreview, PageHeader } from "@/components/admin/ui";
-import { mockNetworkMap } from "@/lib/network/mock-data";
+import { getNetworkMap } from "@/lib/network/queries";
 
-export default function NetworkMapPage() {
+export default async function NetworkMapPage() {
+  const { nodes, edges } = await getNetworkMap();
+
   return (
     <div>
       <PageHeader
         title="Network Map"
         description="Interactive view of users, merchants, orbs, and their connections"
       />
-      <NetworkMapPreview nodes={mockNetworkMap.nodes} edges={mockNetworkMap.edges} />
+      <NetworkMapPreview nodes={nodes} edges={edges} />
       <p className="mt-6 text-sm text-gray-500">
-        Full force-directed visualization ships next — this scaffold exposes the data model and API
-        surface for payments, referrals, and claims.
+        Nodes and edges are derived from live orb claims and referral data in Supabase.
       </p>
     </div>
   );

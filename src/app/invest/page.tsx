@@ -1,10 +1,12 @@
 import { MetricCard, MetricGroup } from "@/components/admin/metric-card";
 import { DataTable, PageHeader } from "@/components/admin/ui";
 import { formatCompactUsd, formatNumber, formatPercent } from "@/lib/format";
-import { mockInvestorSnapshot, mockTransactions } from "@/lib/network/mock-data";
+import { getInvestorSnapshot } from "@/lib/network/queries";
 
-export default function InvestPage() {
-  const data = mockInvestorSnapshot;
+export const dynamic = "force-dynamic";
+
+export default async function InvestPage() {
+  const data = await getInvestorSnapshot();
 
   return (
     <div className="min-h-screen bg-black">
@@ -37,15 +39,13 @@ export default function InvestPage() {
           </h2>
           <DataTable
             columns={["Time", "From", "To", "Amount", "Asset"]}
-            rows={(data.liveTransactions.length ? data.liveTransactions : mockTransactions).map(
-              (tx) => [
-                new Date(tx.time).toLocaleTimeString(),
-                tx.sender,
-                tx.receiver,
-                formatCompactUsd(tx.amount),
-                tx.asset,
-              ]
-            )}
+            rows={data.liveTransactions.map((tx) => [
+              new Date(tx.time).toLocaleTimeString(),
+              tx.sender,
+              tx.receiver,
+              formatCompactUsd(tx.amount),
+              tx.asset,
+            ])}
           />
         </div>
       </main>

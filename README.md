@@ -49,6 +49,39 @@ src/
 
 Mock data in `src/lib/network/mock-data.ts` is the contract for wiring real aggregations from the shared Supabase project and Stellar Horizon.
 
+## Settlements (SozuPay on/off-ramp)
+
+Both apps share the same Supabase project. SozuPay merchants submit requests from `/dashboard/cashout`; ops manage them here.
+
+### One-time setup
+
+Run this migration in the Supabase SQL editor (table is not created yet in your project):
+
+```
+supabase/migrations/20250613000000_withdrawal_requests_ramp.sql
+```
+
+### Ops surfaces
+
+| Route | Purpose |
+|-------|---------|
+| `/dashboard/settlements` | Queue counts (on-ramp + off-ramp) |
+| `/dashboard/settlements/off-ramp` | SozuPay cashout inbox — fulfill or reject |
+| `/dashboard/settlements/on-ramp` | Merchant checkout sessions + consumer deposit intents |
+
+### APIs (admin session required)
+
+| Method | Endpoint | Action |
+|--------|----------|--------|
+| GET | `/api/network/settlements/off-ramp` | List pending merchant withdrawals |
+| POST | `/api/network/settlements/off-ramp/fulfill` | Mark CLP sent / complete |
+| POST | `/api/network/settlements/off-ramp/reject` | Reject request |
+| GET | `/api/network/settlements/on-ramp` | List open on-ramp requests |
+
+**Off-ramp flow:** Merchant POST `/api/cashout` on SozuPay → row in `withdrawal_requests` → ops sends CLP → **Complete** in admin.
+
+**On-ramp flow:** Merchant checkout → `checkout_sessions` (auto-completes via Ramp webhook) · Consumer wallet → `deposit_intents` (monitor in on-ramp queue).
+
 ## Related repos
 
 | Repo | Role |

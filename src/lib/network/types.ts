@@ -35,6 +35,25 @@ export interface HeroMetrics {
   };
 }
 
+/** Live USDC locked in Sozu smart accounts (Soroban). */
+export interface NetworkTvl {
+  totalUsd: number;
+  accountCount: number;
+  accountsWithBalance: number;
+  asOf: string;
+}
+
+/** Headline metrics for the dashboard overview strip. */
+export interface OverviewSnapshot {
+  tvl: NetworkTvl;
+  wallets: number;
+  activeWallets24h: number;
+  merchants: number;
+  volumeMonth: number;
+  payments: number;
+  activeOrbs: number;
+}
+
 export interface FunnelStep {
   id: string;
   label: string;

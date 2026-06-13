@@ -1,8 +1,15 @@
 import { MetricCard, MetricGroup } from "@/components/admin/metric-card";
+import { OverviewStrip } from "@/components/admin/overview-strip";
 import { formatCompactUsd, formatNumber, formatPercent, formatUsd } from "@/lib/format";
-import type { HeroMetrics } from "@/lib/network/types";
+import type { HeroMetrics, OverviewSnapshot } from "@/lib/network/types";
 
-export function HeroMetricsGrid({ data }: { data: HeroMetrics }) {
+export function HeroMetricsGrid({
+  data,
+  snapshot,
+}: {
+  data: HeroMetrics;
+  snapshot: OverviewSnapshot;
+}) {
   return (
     <div className="space-y-10">
       <div>
@@ -11,6 +18,8 @@ export function HeroMetricsGrid({ data }: { data: HeroMetrics }) {
           Real-time operational view of the Sozu Network
         </p>
       </div>
+
+      <OverviewStrip snapshot={snapshot} />
 
       <MetricGroup title="Wallets Created">
         <MetricCard label="Today" value={formatNumber(data.walletsCreated.today)} />

@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { DataTable, PageHeader } from "@/components/admin/ui";
 import { formatCompactUsd } from "@/lib/format";
-import { mockMerchants } from "@/lib/network/mock-data";
+import { getMerchants } from "@/lib/network/queries";
 
-export default function MerchantsPage() {
+export default async function MerchantsPage() {
+  const merchants = await getMerchants();
+
   return (
     <div>
       <PageHeader
@@ -12,7 +14,7 @@ export default function MerchantsPage() {
       />
       <DataTable
         columns={["Merchant", "Location", "Category", "Transactions", "Volume", "Score", ""]}
-        rows={mockMerchants.map((m) => [
+        rows={merchants.map((m) => [
           m.name,
           m.location,
           m.category,

@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { MetricCard, MetricGroup } from "@/components/admin/metric-card";
 import { DataTable, PageHeader, Panel } from "@/components/admin/ui";
 import { formatCompactUsd } from "@/lib/format";
-import { mockUserDetail } from "@/lib/network/mock-data";
+import { getUserDetail } from "@/lib/network/queries";
 
 export default async function UserDetailPage({
   params,
@@ -10,7 +10,7 @@ export default async function UserDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const user = mockUserDetail(id);
+  const user = await getUserDetail(id);
   if (!user) notFound();
 
   return (

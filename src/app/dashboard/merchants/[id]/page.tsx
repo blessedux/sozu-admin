@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { MetricCard, MetricGroup } from "@/components/admin/metric-card";
 import { PageHeader, Panel } from "@/components/admin/ui";
 import { formatCompactUsd, formatUsd } from "@/lib/format";
-import { mockMerchantDetail } from "@/lib/network/mock-data";
+import { getMerchantDetail } from "@/lib/network/queries";
 
 export default async function MerchantDetailPage({
   params,
@@ -10,7 +10,7 @@ export default async function MerchantDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const merchant = mockMerchantDetail(id);
+  const merchant = await getMerchantDetail(id);
   if (!merchant) notFound();
 
   return (

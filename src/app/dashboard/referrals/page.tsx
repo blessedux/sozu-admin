@@ -1,10 +1,10 @@
 import { MetricCard, MetricGroup } from "@/components/admin/metric-card";
 import { DataTable, PageHeader } from "@/components/admin/ui";
 import { formatCompactUsd, formatPercent, formatUsd } from "@/lib/format";
-import { mockReferrals } from "@/lib/network/mock-data";
+import { getReferralMetrics } from "@/lib/network/queries";
 
-export default function ReferralsPage() {
-  const data = mockReferrals;
+export default async function ReferralsPage() {
+  const data = await getReferralMetrics();
 
   return (
     <div className="space-y-8">

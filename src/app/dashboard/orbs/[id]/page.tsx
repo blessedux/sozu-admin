@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { MetricCard, MetricGroup } from "@/components/admin/metric-card";
 import { PageHeader, Panel, StatusBadge } from "@/components/admin/ui";
 import { formatCompactUsd, formatUsd } from "@/lib/format";
-import { mockOrbDetail } from "@/lib/network/mock-data";
+import { getOrbDetail } from "@/lib/network/queries";
 
 export default async function OrbDetailPage({
   params,
@@ -10,7 +10,7 @@ export default async function OrbDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const orb = mockOrbDetail(id);
+  const orb = await getOrbDetail(id);
   if (!orb) notFound();
 
   return (

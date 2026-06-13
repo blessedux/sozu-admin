@@ -1,6 +1,7 @@
 import { HeroMetricsGrid } from "@/components/admin/hero-metrics";
-import { mockHeroMetrics } from "@/lib/network/mock-data";
+import { getDashboardOverview } from "@/lib/network/queries";
 
-export default function DashboardHomePage() {
-  return <HeroMetricsGrid data={mockHeroMetrics} />;
+export default async function DashboardHomePage() {
+  const { hero, snapshot } = await getDashboardOverview();
+  return <HeroMetricsGrid data={hero} snapshot={snapshot} />;
 }
